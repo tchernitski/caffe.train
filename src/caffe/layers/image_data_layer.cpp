@@ -147,6 +147,56 @@ void ImageDataLayer<Dtype>::ShuffleImages() {
   shuffle(lines_.begin(), lines_.end(), prefetch_rng);
 }
 
+template <typename Dtype>
+class CParallelSamplesPreprocess : public cv::ParallelLoopBody
+{
+private:
+     vector<std::pair<std::string, int> >&    _lines;
+     string&                                  _root_folder;
+     int                                      _new_height; 
+     int                                      _new_width; 
+     bool                                     _is_color;
+     Batch<Dtype>*                            _batch;
+     Dtype*                                   _prefetch_data;
+     Dtype*                                   _prefetch_label;
+     shared_ptr<DataTransformer<Dtype> >      _transformer;
+     Blob<Dtype>*                             _transformed_data;
+     int                                      _start_line_idx;
+    
+public:
+    CParallelSamplesPreprocess(vector<std::pair<std::string, int> >& lines, string& root_folder, int new_height, 
+                                                                  int new_width, int is_color, Batch<Dtype>* batch, Dtype* prefetch_data, Dtype* prefetch_label, const shared_ptr<DataTransformer<Dtype> >& transformer, Blob<Dtype>* transformed_data, int start_line_idx) :
+        _lines(lines), _root_folder(root_folder), _new_height(new_height), _new_width(new_width), _is_color(is_color), 
+        _batch(batch), _prefetch_data(prefetch_data), _prefetch_label(prefetch_label), _transformer(transformer), _transformed_data(transformed_data), _start_line_idx(start_line_idx)
+    {}
+
+    virtual void operator()(const cv::Range& range) const
+    {
+      // for (int item_id = 0; item_id < batch_size; ++item_id) {
+      for(int lines_id = range.start; lines_id < range.end; lines_id++) {
+        
+        int line_idx = _start_line_idx + lines_id;
+      
+        
+        std::pair<std::string, int> this_line;
+
+        this_line = _lines[line_idx];
+      
+        cv::Mat cv_img = ReadImageToCVMat(_root_folder + this_line.first,
+                                          _new_height, _new_width, _is_color);
+        // Apply transformations (mirror, crop...) to the image
+        int offset = _batch->data_.offset(lines_id);
+
+        // //Dtype* chunk = _prefetch_data + offset;
+        _transformed_data->set_cpu_data(_prefetch_data + offset);
+        _transformer->Transform(cv_img, _transformed_data);
+       
+        _prefetch_label[lines_id] = this_line.second;
+      }
+    }
+};
+
+
 // This function is called on prefetch thread
 template <typename Dtype>
 void ImageDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
@@ -183,88 +233,120 @@ void ImageDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
     prefetch_weight = batch->weight_.mutable_cpu_data();
   }
 
-  // datum scales
   const int lines_size = lines_.size();
-  for (int item_id = 0; item_id < batch_size; ++item_id) {
-    // get a blob
-    timer.Start();
-    bool valid_sample = false;
-    while (!valid_sample) {
-      std::pair<std::string, int> this_line;
+  const int threads = 8;
+  const int cycles = batch_size/threads;
 
-      if (balance_) {
-        int pick_index = (caffe_rng_rand() % num_samples_[class_id_]) + 1;
-        for (auto& sample : filename_by_class_[class_id_]) {
-          if (sample.second == 0) {
-            pick_index--;
-            if (pick_index == 0) {
-              this_line = std::make_pair(sample.first, class_id_);
-              sample.second = 1;
-              num_samples_[class_id_]--;
-              break;
-            }
-          }
-        }
-        CHECK_GT(this_line.first.size(), 0);
-        if (num_samples_[class_id_] == 0) {
-          num_samples_[class_id_] = filename_by_class_[class_id_].size();
-          for (auto& sample : filename_by_class_[class_id_]) {
-            sample.second = 0;
-          }
-        }
-      }
-      else {
-        CHECK_GT(lines_size, lines_id_);
-        this_line = lines_[lines_id_];
-      }
 
-      cv::Mat cv_img = ReadImageToCVMat(root_folder + this_line.first,
-                                        new_height, new_width, is_color);
-      if (!cv_img.data) {
-        LOG(INFO) << "Could not load " << this_line.first;
-        valid_sample = false;
-      }
-      else {
-        valid_sample = true;
-      }
-      read_time += timer.MicroSeconds();
-      timer.Start();
-      // Apply transformations (mirror, crop...) to the image
-      int offset = batch->data_.offset(item_id);
-      this->transformed_data_.set_cpu_data(prefetch_data + offset);
-      this->data_transformer_->Transform(cv_img, &(this->transformed_data_));
-      trans_time += timer.MicroSeconds();
+  printf("---------------- batch start\n");
+  for (int i = 0; i < cycles; ++i) {
+    printf("---------------- cycle start: %d, %d\n", i*threads, i*threads+threads);
+    // lets use opencv multithreading api (TBB threading backend) 
+    // printf("Range: %d - %d\n", i*threads, i*threads+threads);
+    cv::parallel_for_(cv::Range(i*threads, i*threads+threads), CParallelSamplesPreprocess<Dtype>(lines_, root_folder, 
+                                                               new_height, new_width, is_color, batch, prefetch_data, prefetch_label, this->data_transformer_, &(this->transformed_data_), lines_id_));
+    printf("---------------- cycle end\n");
+  }
 
-      prefetch_label[item_id] = this_line.second;
-      if (this->output_weights_) {
-        prefetch_weight[item_id] = class_weights_[this_line.second];
-      }
-      // go to the next iter
-      if (balance_) {
-        class_id_++;
-        if (class_id_ >= num_samples_.size()) {
-          // We have reached the end. Restart from the first.
-          DLOG(INFO) << "Restarting data prefetching from start.";
-          class_id_ = 0;
-        }
-      }
-      else {
-        lines_id_++;
-        if (lines_id_ >= lines_size) {
-          // We have reached the end. Restart from the first.
-          DLOG(INFO) << "Restarting data prefetching from start.";
-          lines_id_ = 0;
-          if (this->layer_param_.image_data_param().shuffle()) {
-            ShuffleImages();
-          }
-        }
-      }
+  printf("---------------- batch end\n");
+  lines_id_ += batch_size;
+  
+  // go to the next iter
+  if (lines_id_ >= lines_size) {
+    // We have reached the end. Restart from the first.
+    DLOG(INFO) << "Restarting data prefetching from start.";
+    lines_id_ = 0;
+    if (this->layer_param_.image_data_param().shuffle()) {
+      ShuffleImages();
     }
   }
+  
+
+
+  // // datum scales
+  // const int lines_size = lines_.size();
+  // for (int item_id = 0; item_id < batch_size; ++item_id) {
+  //   // get a blob
+  //   timer.Start();
+  //   bool valid_sample = false;
+  //   while (!valid_sample) {
+  //     std::pair<std::string, int> this_line;
+
+  //     if (balance_) {
+  //       int pick_index = (caffe_rng_rand() % num_samples_[class_id_]) + 1;
+  //       for (auto& sample : filename_by_class_[class_id_]) {
+  //         if (sample.second == 0) {
+  //           pick_index--;
+  //           if (pick_index == 0) {
+  //             this_line = std::make_pair(sample.first, class_id_);
+  //             sample.second = 1;
+  //             num_samples_[class_id_]--;
+  //             break;
+  //           }
+  //         }
+  //       }
+  //       CHECK_GT(this_line.first.size(), 0);
+  //       if (num_samples_[class_id_] == 0) {
+  //         num_samples_[class_id_] = filename_by_class_[class_id_].size();
+  //         for (auto& sample : filename_by_class_[class_id_]) {
+  //           sample.second = 0;
+  //         }
+  //       }
+  //     }
+  //     else {
+  //       CHECK_GT(lines_size, lines_id_);
+  //       this_line = lines_[lines_id_];
+  //     }
+
+  //     cv::Mat cv_img = ReadImageToCVMat(root_folder + this_line.first,
+  //                                       new_height, new_width, is_color);
+  //     if (!cv_img.data) {
+  //       LOG(INFO) << "Could not load " << this_line.first;
+  //       valid_sample = false;
+  //     }
+  //     else {
+  //       valid_sample = true;
+  //     }
+  //     read_time += timer.MicroSeconds();
+  //     timer.Start();
+  //     // Apply transformations (mirror, crop...) to the image
+  //     int offset = batch->data_.offset(item_id);
+  //     this->transformed_data_.set_cpu_data(prefetch_data + offset);
+  //     this->data_transformer_->Transform(cv_img, &(this->transformed_data_));
+  //     trans_time += timer.MicroSeconds();
+
+  //     prefetch_label[item_id] = this_line.second;
+  //     if (this->output_weights_) {
+  //       prefetch_weight[item_id] = class_weights_[this_line.second];
+  //     }
+  //     // go to the next iter
+  //     if (balance_) {
+  //       class_id_++;
+  //       if (class_id_ >= num_samples_.size()) {
+  //         // We have reached the end. Restart from the first.
+  //         DLOG(INFO) << "Restarting data prefetching from start.";
+  //         class_id_ = 0;
+  //       }
+  //     }
+  //     else {
+  //       lines_id_++;
+  //       if (lines_id_ >= lines_size) {
+  //         // We have reached the end. Restart from the first.
+  //         DLOG(INFO) << "Restarting data prefetching from start.";
+  //         lines_id_ = 0;
+  //         if (this->layer_param_.image_data_param().shuffle()) {
+  //           ShuffleImages();
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
   batch_timer.Stop();
-  DLOG(INFO) << "Prefetch batch: " << batch_timer.MilliSeconds() << " ms.";
-  DLOG(INFO) << "     Read time: " << read_time / 1000 << " ms.";
-  DLOG(INFO) << "Transform time: " << trans_time / 1000 << " ms.";
+  printf("Prefetch batch: %d ms.\n", (int)batch_timer.MilliSeconds());
+  // DLOG(INFO) << "Prefetch batch: " << batch_timer.MilliSeconds() << " ms.";
+  // DLOG(INFO) << "     Read time: " << read_time / 1000 << " ms.";
+  // DLOG(INFO) << "Transform time: " << trans_time / 1000 << " ms.";
 }
 
 INSTANTIATE_CLASS(ImageDataLayer);

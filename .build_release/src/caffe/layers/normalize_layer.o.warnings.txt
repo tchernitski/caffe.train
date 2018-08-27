@@ -1,0 +1,8 @@
+src/caffe/layers/normalize_layer.cpp: In instantiation of ‘void caffe::NormalizeLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/normalize_layer.cpp:154:1:   required from here
+src/caffe/layers/normalize_layer.cpp:91:16: warning: unused variable ‘square_data’ [-Wunused-variable]
+   const Dtype* square_data = squared_.cpu_data();
+                ^
+src/caffe/layers/normalize_layer.cpp: In instantiation of ‘void caffe::NormalizeLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/normalize_layer.cpp:154:1:   required from here
+src/caffe/layers/normalize_layer.cpp:91:16: warning: unused variable ‘square_data’ [-Wunused-variable]

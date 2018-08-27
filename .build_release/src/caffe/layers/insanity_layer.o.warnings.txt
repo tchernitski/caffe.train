@@ -1,0 +1,42 @@
+src/caffe/layers/insanity_layer.cpp: In instantiation of ‘void caffe::InsanityLayer<Dtype>::LayerSetUp(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/insanity_layer.cpp:99:1:   required from here
+src/caffe/layers/insanity_layer.cpp:16:7: warning: unused variable ‘channels’ [-Wunused-variable]
+   int channels = bottom[0]->channels();
+       ^
+src/caffe/layers/insanity_layer.cpp: In instantiation of ‘void caffe::InsanityLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/insanity_layer.cpp:99:1:   required from here
+src/caffe/layers/insanity_layer.cpp:43:13: warning: unused variable ‘dim’ [-Wunused-variable]
+   const int dim = bottom[0]->count(2);
+             ^
+src/caffe/layers/insanity_layer.cpp:44:13: warning: unused variable ‘channels’ [-Wunused-variable]
+   const int channels = bottom[0]->channels();
+             ^
+src/caffe/layers/insanity_layer.cpp: In instantiation of ‘void caffe::InsanityLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/insanity_layer.cpp:99:1:   required from here
+src/caffe/layers/insanity_layer.cpp:76:13: warning: unused variable ‘dim’ [-Wunused-variable]
+   const int dim = bottom[0]->count(2);
+             ^
+src/caffe/layers/insanity_layer.cpp:77:13: warning: unused variable ‘channels’ [-Wunused-variable]
+   const int channels = bottom[0]->channels();
+             ^
+src/caffe/layers/insanity_layer.cpp: In instantiation of ‘void caffe::InsanityLayer<Dtype>::LayerSetUp(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/insanity_layer.cpp:99:1:   required from here
+src/caffe/layers/insanity_layer.cpp:16:7: warning: unused variable ‘channels’ [-Wunused-variable]
+   int channels = bottom[0]->channels();
+       ^
+src/caffe/layers/insanity_layer.cpp: In instantiation of ‘void caffe::InsanityLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/insanity_layer.cpp:99:1:   required from here
+src/caffe/layers/insanity_layer.cpp:43:13: warning: unused variable ‘dim’ [-Wunused-variable]
+   const int dim = bottom[0]->count(2);
+             ^
+src/caffe/layers/insanity_layer.cpp:44:13: warning: unused variable ‘channels’ [-Wunused-variable]
+   const int channels = bottom[0]->channels();
+             ^
+src/caffe/layers/insanity_layer.cpp: In instantiation of ‘void caffe::InsanityLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/insanity_layer.cpp:99:1:   required from here
+src/caffe/layers/insanity_layer.cpp:76:13: warning: unused variable ‘dim’ [-Wunused-variable]
+   const int dim = bottom[0]->count(2);
+             ^
+src/caffe/layers/insanity_layer.cpp:77:13: warning: unused variable ‘channels’ [-Wunused-variable]
+   const int channels = bottom[0]->channels();
+             ^

@@ -1,0 +1,22 @@
+src/caffe/layers/image_data_layer.cpp: In instantiation of ‘void caffe::ImageDataLayer<Dtype>::load_batch(caffe::Batch<Dtype>*) [with Dtype = float]’:
+src/caffe/layers/image_data_layer.cpp:352:1:   required from here
+src/caffe/layers/image_data_layer.cpp:205:10: warning: unused variable ‘read_time’ [-Wunused-variable]
+   double read_time = 0;
+          ^
+src/caffe/layers/image_data_layer.cpp:206:10: warning: unused variable ‘trans_time’ [-Wunused-variable]
+   double trans_time = 0;
+          ^
+src/caffe/layers/image_data_layer.cpp:231:10: warning: variable ‘prefetch_weight’ set but not used [-Wunused-but-set-variable]
+   Dtype* prefetch_weight;
+          ^
+src/caffe/layers/image_data_layer.cpp: In instantiation of ‘void caffe::ImageDataLayer<Dtype>::load_batch(caffe::Batch<Dtype>*) [with Dtype = double]’:
+src/caffe/layers/image_data_layer.cpp:352:1:   required from here
+src/caffe/layers/image_data_layer.cpp:205:10: warning: unused variable ‘read_time’ [-Wunused-variable]
+   double read_time = 0;
+          ^
+src/caffe/layers/image_data_layer.cpp:206:10: warning: unused variable ‘trans_time’ [-Wunused-variable]
+   double trans_time = 0;
+          ^
+src/caffe/layers/image_data_layer.cpp:231:10: warning: variable ‘prefetch_weight’ set but not used [-Wunused-but-set-variable]
+   Dtype* prefetch_weight;
+          ^

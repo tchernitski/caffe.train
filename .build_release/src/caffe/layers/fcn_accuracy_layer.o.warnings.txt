@@ -1,0 +1,6 @@
+src/caffe/layers/fcn_accuracy_layer.cpp: In member function ‘void caffe::FCNAccuracyLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/fcn_accuracy_layer.cpp:55:13: warning: ‘max_val’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+             if (bottom_data[bottom[0]->offset(n, c, h, w)] > max_val) {
+             ^
+src/caffe/layers/fcn_accuracy_layer.cpp: In member function ‘void caffe::FCNAccuracyLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/fcn_accuracy_layer.cpp:55:13: warning: ‘max_val’ may be used uninitialized in this function [-Wmaybe-uninitialized]
