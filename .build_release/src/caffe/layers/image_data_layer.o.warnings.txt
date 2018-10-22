@@ -1,0 +1,6 @@
+src/caffe/layers/image_data_layer.cpp: In member function ‘void caffe::ImageDataLayer<Dtype>::load_batch(caffe::Batch<Dtype>*) [with Dtype = float]’:
+src/caffe/layers/image_data_layer.cpp:181:10: warning: ‘prefetch_weight’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+   Dtype* prefetch_weight;
+          ^
+src/caffe/layers/image_data_layer.cpp: In member function ‘void caffe::ImageDataLayer<Dtype>::load_batch(caffe::Batch<Dtype>*) [with Dtype = double]’:
+src/caffe/layers/image_data_layer.cpp:181:10: warning: ‘prefetch_weight’ may be used uninitialized in this function [-Wmaybe-uninitialized]

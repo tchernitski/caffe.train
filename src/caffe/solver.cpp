@@ -3,6 +3,11 @@
 #include <string>
 #include <vector>
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/core/mat.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
 #include "caffe/solver.hpp"
 #include "caffe/util/format.hpp"
 #include "caffe/util/hdf5.hpp"
@@ -216,6 +221,31 @@ void Solver<Dtype>::Step(int iters) {
       ++iter_;
       continue;
     }
+
+    // output layer blob to file
+    // const shared_ptr<Blob<Dtype> >& weight = net_->blob_by_name("conv1a");
+    // // shared_ptr<Blob<Dtype> >& weight = conv_layer->blobs()[0];
+    // Dtype* conv_weight = weight->mutable_cpu_data();
+
+    // // const float* probs_out = probs->cpu_data();
+
+    // cv::Mat matout(weight->height(), weight->width(), CV_32F);
+
+
+    // for (size_t i = 0; i < weight->height(); i++)
+    // {
+    //     for (size_t j = 0; j < weight->width(); j++)
+    //     {
+    //         matout.at<float>(i, j) = conv_weight[i* weight->width() + j] * 255.0;
+    //     }
+
+    // }
+    // matout.convertTo(matout, CV_8UC1);
+    // imwrite("/home/amba/Work/tmp/gray.png", matout);
+    // assert(false);
+
+    //
+
     // average the loss across iterations for smoothed reporting
     UpdateSmoothedLoss(loss, start_iter, average_loss);
     if (display) {

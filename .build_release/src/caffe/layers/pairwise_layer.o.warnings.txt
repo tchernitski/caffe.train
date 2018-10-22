@@ -1,0 +1,16 @@
+src/caffe/layers/pairwise_layer.cpp: In instantiation of ‘void caffe::PairwiseLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/pairwise_layer.cpp:189:1:   required from here
+src/caffe/layers/pairwise_layer.cpp:99:13: warning: unused variable ‘count’ [-Wunused-variable]
+   const int count = top[0]->count();
+             ^
+src/caffe/layers/pairwise_layer.cpp:100:16: warning: unused variable ‘top_data’ [-Wunused-variable]
+   const Dtype* top_data = top[0]->cpu_data();
+                ^
+src/caffe/layers/pairwise_layer.cpp: In instantiation of ‘void caffe::PairwiseLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/pairwise_layer.cpp:189:1:   required from here
+src/caffe/layers/pairwise_layer.cpp:99:13: warning: unused variable ‘count’ [-Wunused-variable]
+   const int count = top[0]->count();
+             ^
+src/caffe/layers/pairwise_layer.cpp:100:16: warning: unused variable ‘top_data’ [-Wunused-variable]
+   const Dtype* top_data = top[0]->cpu_data();
+                ^

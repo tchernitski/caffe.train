@@ -1,0 +1,32 @@
+src/caffe/layers/soft_contrastive_loss_layer.cpp: In instantiation of ‘void caffe::SoftContrastiveLossLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/soft_contrastive_loss_layer.cpp:168:1:   required from here
+src/caffe/layers/soft_contrastive_loss_layer.cpp:45:9: warning: unused variable ‘weighted_count’ [-Wunused-variable]
+   Dtype weighted_count = num * (abs(positive_weight_) + (dim - 1)*abs(negative_weight_));
+         ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp: In instantiation of ‘void caffe::SoftContrastiveLossLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/soft_contrastive_loss_layer.cpp:168:1:   required from here
+src/caffe/layers/soft_contrastive_loss_layer.cpp:116:13: warning: unused variable ‘min_negative_distance’ [-Wunused-variable]
+       Dtype min_negative_distance = FLT_MAX;
+             ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp:117:11: warning: unused variable ‘min_negative_index’ [-Wunused-variable]
+       int min_negative_index = 0;
+           ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp:113:11: warning: unused variable ‘negative_sum’ [-Wunused-variable]
+     Dtype negative_sum = Dtype(0);
+           ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp: In instantiation of ‘void caffe::SoftContrastiveLossLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/soft_contrastive_loss_layer.cpp:168:1:   required from here
+src/caffe/layers/soft_contrastive_loss_layer.cpp:45:9: warning: unused variable ‘weighted_count’ [-Wunused-variable]
+   Dtype weighted_count = num * (abs(positive_weight_) + (dim - 1)*abs(negative_weight_));
+         ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp: In instantiation of ‘void caffe::SoftContrastiveLossLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/soft_contrastive_loss_layer.cpp:168:1:   required from here
+src/caffe/layers/soft_contrastive_loss_layer.cpp:116:13: warning: unused variable ‘min_negative_distance’ [-Wunused-variable]
+       Dtype min_negative_distance = FLT_MAX;
+             ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp:117:11: warning: unused variable ‘min_negative_index’ [-Wunused-variable]
+       int min_negative_index = 0;
+           ^
+src/caffe/layers/soft_contrastive_loss_layer.cpp:113:11: warning: unused variable ‘negative_sum’ [-Wunused-variable]
+     Dtype negative_sum = Dtype(0);
+           ^

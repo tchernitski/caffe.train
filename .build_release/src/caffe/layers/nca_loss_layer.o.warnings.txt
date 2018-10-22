@@ -1,0 +1,8 @@
+src/caffe/layers/nca_loss_layer.cpp: In instantiation of ‘void caffe::NCALossLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/nca_loss_layer.cpp:126:1:   required from here
+src/caffe/layers/nca_loss_layer.cpp:88:11: warning: unused variable ‘negative_sum’ [-Wunused-variable]
+     Dtype negative_sum = Dtype(0);
+           ^
+src/caffe/layers/nca_loss_layer.cpp: In instantiation of ‘void caffe::NCALossLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/nca_loss_layer.cpp:126:1:   required from here
+src/caffe/layers/nca_loss_layer.cpp:88:11: warning: unused variable ‘negative_sum’ [-Wunused-variable]
