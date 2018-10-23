@@ -451,6 +451,7 @@ message LayerParameter {
   optional FocalLossParameter focal_loss_param = 235;
   optional LabelSpecificMarginParameter label_specific_margin_param = 236;
   optional ChannelScaleParameter channel_scale_param = 237;
+  optional CombinedMarginParameter combined_margin_param = 238;
 }
 
 // Message that stores parameters used to apply transformation
@@ -1979,3 +1980,11 @@ message ChannelScaleParameter{
   optional bool do_backward_feature = 2 [default = true];
   optional bool do_backward_scale = 3 [default = true];
 }
+
+// and add this to your caffe.proto, such as the end of it
+message CombinedMarginParameter {
+    optional float m1 = 1 [default = 4];
+    optional float m2 = 2 [default = 0.5];
+    optional float m3 = 3 [default = 0.35];
+    optional bool transform_test = 4 [default = false];
+  }

@@ -135,6 +135,7 @@ class ConfidencePenaltyLossParameter;
 class FocalLossParameter;
 class LabelSpecificMarginParameter;
 class ChannelScaleParameter;
+class CombinedMarginParameter;
 
 enum FillerParameter_VarianceNorm {
   FillerParameter_VarianceNorm_FAN_IN = 0,
@@ -3837,6 +3838,15 @@ class LayerParameter : public ::google::protobuf::Message {
   inline ::caffe::ChannelScaleParameter* release_channel_scale_param();
   inline void set_allocated_channel_scale_param(::caffe::ChannelScaleParameter* channel_scale_param);
 
+  // optional .caffe.CombinedMarginParameter combined_margin_param = 238;
+  inline bool has_combined_margin_param() const;
+  inline void clear_combined_margin_param();
+  static const int kCombinedMarginParamFieldNumber = 238;
+  inline const ::caffe::CombinedMarginParameter& combined_margin_param() const;
+  inline ::caffe::CombinedMarginParameter* mutable_combined_margin_param();
+  inline ::caffe::CombinedMarginParameter* release_combined_margin_param();
+  inline void set_allocated_combined_margin_param(::caffe::CombinedMarginParameter* combined_margin_param);
+
   // @@protoc_insertion_point(class_scope:caffe.LayerParameter)
  private:
   inline void set_has_name();
@@ -4019,6 +4029,8 @@ class LayerParameter : public ::google::protobuf::Message {
   inline void clear_has_label_specific_margin_param();
   inline void set_has_channel_scale_param();
   inline void clear_has_channel_scale_param();
+  inline void set_has_combined_margin_param();
+  inline void clear_has_combined_margin_param();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -4120,6 +4132,7 @@ class LayerParameter : public ::google::protobuf::Message {
   ::caffe::FocalLossParameter* focal_loss_param_;
   ::caffe::LabelSpecificMarginParameter* label_specific_margin_param_;
   ::caffe::ChannelScaleParameter* channel_scale_param_;
+  ::caffe::CombinedMarginParameter* combined_margin_param_;
   int phase_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_caffe_2eproto();
@@ -16762,6 +16775,115 @@ class ChannelScaleParameter : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static ChannelScaleParameter* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class CombinedMarginParameter : public ::google::protobuf::Message {
+ public:
+  CombinedMarginParameter();
+  virtual ~CombinedMarginParameter();
+
+  CombinedMarginParameter(const CombinedMarginParameter& from);
+
+  inline CombinedMarginParameter& operator=(const CombinedMarginParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CombinedMarginParameter& default_instance();
+
+  void Swap(CombinedMarginParameter* other);
+
+  // implements Message ----------------------------------------------
+
+  CombinedMarginParameter* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const CombinedMarginParameter& from);
+  void MergeFrom(const CombinedMarginParameter& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional float m1 = 1 [default = 4];
+  inline bool has_m1() const;
+  inline void clear_m1();
+  static const int kM1FieldNumber = 1;
+  inline float m1() const;
+  inline void set_m1(float value);
+
+  // optional float m2 = 2 [default = 0.5];
+  inline bool has_m2() const;
+  inline void clear_m2();
+  static const int kM2FieldNumber = 2;
+  inline float m2() const;
+  inline void set_m2(float value);
+
+  // optional float m3 = 3 [default = 0.35];
+  inline bool has_m3() const;
+  inline void clear_m3();
+  static const int kM3FieldNumber = 3;
+  inline float m3() const;
+  inline void set_m3(float value);
+
+  // optional bool transform_test = 4 [default = false];
+  inline bool has_transform_test() const;
+  inline void clear_transform_test();
+  static const int kTransformTestFieldNumber = 4;
+  inline bool transform_test() const;
+  inline void set_transform_test(bool value);
+
+  // @@protoc_insertion_point(class_scope:caffe.CombinedMarginParameter)
+ private:
+  inline void set_has_m1();
+  inline void clear_has_m1();
+  inline void set_has_m2();
+  inline void clear_has_m2();
+  inline void set_has_m3();
+  inline void clear_has_m3();
+  inline void set_has_transform_test();
+  inline void clear_has_transform_test();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  float m1_;
+  float m2_;
+  float m3_;
+  bool transform_test_;
+  friend void  protobuf_AddDesc_caffe_2eproto();
+  friend void protobuf_AssignDesc_caffe_2eproto();
+  friend void protobuf_ShutdownFile_caffe_2eproto();
+
+  void InitAsDefaultInstance();
+  static CombinedMarginParameter* default_instance_;
+};
 // ===================================================================
 
 
@@ -24057,6 +24179,47 @@ inline void LayerParameter::set_allocated_channel_scale_param(::caffe::ChannelSc
     clear_has_channel_scale_param();
   }
   // @@protoc_insertion_point(field_set_allocated:caffe.LayerParameter.channel_scale_param)
+}
+
+// optional .caffe.CombinedMarginParameter combined_margin_param = 238;
+inline bool LayerParameter::has_combined_margin_param() const {
+  return (_has_bits_[3] & 0x00000004u) != 0;
+}
+inline void LayerParameter::set_has_combined_margin_param() {
+  _has_bits_[3] |= 0x00000004u;
+}
+inline void LayerParameter::clear_has_combined_margin_param() {
+  _has_bits_[3] &= ~0x00000004u;
+}
+inline void LayerParameter::clear_combined_margin_param() {
+  if (combined_margin_param_ != NULL) combined_margin_param_->::caffe::CombinedMarginParameter::Clear();
+  clear_has_combined_margin_param();
+}
+inline const ::caffe::CombinedMarginParameter& LayerParameter::combined_margin_param() const {
+  // @@protoc_insertion_point(field_get:caffe.LayerParameter.combined_margin_param)
+  return combined_margin_param_ != NULL ? *combined_margin_param_ : *default_instance_->combined_margin_param_;
+}
+inline ::caffe::CombinedMarginParameter* LayerParameter::mutable_combined_margin_param() {
+  set_has_combined_margin_param();
+  if (combined_margin_param_ == NULL) combined_margin_param_ = new ::caffe::CombinedMarginParameter;
+  // @@protoc_insertion_point(field_mutable:caffe.LayerParameter.combined_margin_param)
+  return combined_margin_param_;
+}
+inline ::caffe::CombinedMarginParameter* LayerParameter::release_combined_margin_param() {
+  clear_has_combined_margin_param();
+  ::caffe::CombinedMarginParameter* temp = combined_margin_param_;
+  combined_margin_param_ = NULL;
+  return temp;
+}
+inline void LayerParameter::set_allocated_combined_margin_param(::caffe::CombinedMarginParameter* combined_margin_param) {
+  delete combined_margin_param_;
+  combined_margin_param_ = combined_margin_param;
+  if (combined_margin_param) {
+    set_has_combined_margin_param();
+  } else {
+    clear_has_combined_margin_param();
+  }
+  // @@protoc_insertion_point(field_set_allocated:caffe.LayerParameter.combined_margin_param)
 }
 
 // -------------------------------------------------------------------
@@ -40363,6 +40526,106 @@ inline void ChannelScaleParameter::set_do_backward_scale(bool value) {
   set_has_do_backward_scale();
   do_backward_scale_ = value;
   // @@protoc_insertion_point(field_set:caffe.ChannelScaleParameter.do_backward_scale)
+}
+
+// -------------------------------------------------------------------
+
+// CombinedMarginParameter
+
+// optional float m1 = 1 [default = 4];
+inline bool CombinedMarginParameter::has_m1() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void CombinedMarginParameter::set_has_m1() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void CombinedMarginParameter::clear_has_m1() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void CombinedMarginParameter::clear_m1() {
+  m1_ = 4;
+  clear_has_m1();
+}
+inline float CombinedMarginParameter::m1() const {
+  // @@protoc_insertion_point(field_get:caffe.CombinedMarginParameter.m1)
+  return m1_;
+}
+inline void CombinedMarginParameter::set_m1(float value) {
+  set_has_m1();
+  m1_ = value;
+  // @@protoc_insertion_point(field_set:caffe.CombinedMarginParameter.m1)
+}
+
+// optional float m2 = 2 [default = 0.5];
+inline bool CombinedMarginParameter::has_m2() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void CombinedMarginParameter::set_has_m2() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void CombinedMarginParameter::clear_has_m2() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void CombinedMarginParameter::clear_m2() {
+  m2_ = 0.5f;
+  clear_has_m2();
+}
+inline float CombinedMarginParameter::m2() const {
+  // @@protoc_insertion_point(field_get:caffe.CombinedMarginParameter.m2)
+  return m2_;
+}
+inline void CombinedMarginParameter::set_m2(float value) {
+  set_has_m2();
+  m2_ = value;
+  // @@protoc_insertion_point(field_set:caffe.CombinedMarginParameter.m2)
+}
+
+// optional float m3 = 3 [default = 0.35];
+inline bool CombinedMarginParameter::has_m3() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void CombinedMarginParameter::set_has_m3() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void CombinedMarginParameter::clear_has_m3() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void CombinedMarginParameter::clear_m3() {
+  m3_ = 0.35f;
+  clear_has_m3();
+}
+inline float CombinedMarginParameter::m3() const {
+  // @@protoc_insertion_point(field_get:caffe.CombinedMarginParameter.m3)
+  return m3_;
+}
+inline void CombinedMarginParameter::set_m3(float value) {
+  set_has_m3();
+  m3_ = value;
+  // @@protoc_insertion_point(field_set:caffe.CombinedMarginParameter.m3)
+}
+
+// optional bool transform_test = 4 [default = false];
+inline bool CombinedMarginParameter::has_transform_test() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void CombinedMarginParameter::set_has_transform_test() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void CombinedMarginParameter::clear_has_transform_test() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void CombinedMarginParameter::clear_transform_test() {
+  transform_test_ = false;
+  clear_has_transform_test();
+}
+inline bool CombinedMarginParameter::transform_test() const {
+  // @@protoc_insertion_point(field_get:caffe.CombinedMarginParameter.transform_test)
+  return transform_test_;
+}
+inline void CombinedMarginParameter::set_transform_test(bool value) {
+  set_has_transform_test();
+  transform_test_ = value;
+  // @@protoc_insertion_point(field_set:caffe.CombinedMarginParameter.transform_test)
 }
 
 
